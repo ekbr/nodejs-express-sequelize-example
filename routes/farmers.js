@@ -4,8 +4,8 @@ var models  = require('../models');
 module.exports.list = function(req, res){
   models.Farmer.findAll({}).then(function(rows) {
      models.Farmer.findAll({ include: [ models.Task ] }).then(function(farmers) {
-        console.log(JSON.stringify(farmers))
-     })
+        //console.log(JSON.stringify(farmers))
+     });
     res.render('farmers/farmers', {page_title: "Farmers", data:rows});
   });; 
 }
@@ -86,6 +86,16 @@ module.exports.show = function(req, res){
         if (err) console.log("Error Selecting : %s ",err );
         res.render('farmers/show',{page_title:"Show Farmer", data:row});
     });
+};
+
+module.exports.tasks = function(req, res){
+    var id = req.params.id;
+    models.Farmer.find({ include: [ models.Task ], where: {id: id} }).then(function(farmer) {
+        //console.log('####################');
+        //console.log(JSON.stringify(farmer.Tasks));
+        res.render('farmers/tasks', {page_title: "Farmer Tasks", data:farmer, tasks: farmer.Tasks});
+     })
+     //res.redirect('/farmers');
 };
 
 

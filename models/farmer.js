@@ -9,9 +9,9 @@ module.exports = function(sequelize, DataTypes) {
     address: DataTypes.STRING,
     email: {
         type: DataTypes.STRING,
-        // validate: {
-        //    validator: 'isEmail'
-        // }
+        validate: {
+           validator: 'isEmail'
+        }
     },
     phone:{
             type: DataTypes.STRING,

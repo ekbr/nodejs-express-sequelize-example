@@ -32,6 +32,7 @@ app.get('/farmers/edit/:id', farmers.edit);
 app.get('/farmers/:id', farmers.show);
 app.post('/farmers/edit/:id', farmers.save_edit);
 app.get('/farmers/delete/:id', farmers.delete);
+app.get('/farmers/:id/tasks', farmers.tasks);
 
 
 app.get('/tasks', tasks.list);//all tasks
