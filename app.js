@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var home = require('./routes/index');
 var farmers = require('./routes/farmers');
+var tasks = require('./routes/tasks');
 
 var app = express();
 
@@ -24,15 +25,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', home);
 
-app.get('/farmers', farmers.list);//all farmersapp.get('/customers/add', customers.add);//route add customer, get n post
-app.get('/farmers/add', farmers.add);//route add customer, get n post
-app.post('/farmers/add', farmers.save);//route add customer, get n post
+app.get('/farmers', farmers.list);//all farmers
+app.get('/farmers/add', farmers.add);//route add farmer
+app.post('/farmers/add', farmers.save);//route add farmer
 app.get('/farmers/edit/:id', farmers.edit);
 app.get('/farmers/:id', farmers.show);
 app.post('/farmers/edit/:id', farmers.save_edit);
 app.get('/farmers/delete/:id', farmers.delete);
 
 
+app.get('/tasks', tasks.list);//all tasks
+app.get('/tasks/add', tasks.add);//route add tasks
+app.post('/tasks/add', tasks.save);//route add tasks
+app.get('/tasks/edit/:id', tasks.edit);
+app.post('/tasks/edit/:id', tasks.save_edit);
+app.get('/tasks/delete/:id', tasks.delete);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

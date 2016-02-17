@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<% include ../layout/head.ejs %>
+  </head>
+  <body>
+  	<% include ../layout/header.ejs %>
+    <hr>
+    <div class="container">
+        <div class="row">
+        <form method="post" action="/tasks/add">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" name="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="exampleInputPassword1">Description</label>
+                <textarea class="form-control" name="description" required rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Deadline</label>
+                <input class="form-control" type="date" name="deadline" required>
+            </div>
+            <div class="form-group">
+                <label>Task asssign to a farmer</label>
+                <select class="form-control" name="FarmerId">
+                    <% for (var i = 0; i < data.length; i++) {%>
+                        <option value="<%= data[i].id %>"><%= data[i].username %></option>
+                    <% } %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="submit" onclick="cancelAdd()" class="btn btn-default">Cancel</button>
+        </form>
+    </div>
+    </div>
+    <%- include ../layout/footer.ejs %>
+  </body>
+</html>

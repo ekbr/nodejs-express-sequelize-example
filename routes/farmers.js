@@ -3,6 +3,9 @@ var models  = require('../models');
 
 module.exports.list = function(req, res){
   models.Farmer.findAll({}).then(function(rows) {
+     models.Farmer.findAll({ include: [ models.Task ] }).then(function(farmers) {
+        console.log(JSON.stringify(farmers))
+     })
     res.render('farmers/farmers', {page_title: "Farmers", data:rows});
   });; 
 }

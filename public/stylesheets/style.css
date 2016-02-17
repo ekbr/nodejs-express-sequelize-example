@@ -64,6 +64,6 @@ input[type="submit"]{
     background:#6599FF;
 }
 textarea{ border:1px solid #ddd;width:296px;}
-.label{font-weight:bold;}
+.label{font-weight:bold; color:#286090;}
 
 #footer{margin-left:82%;margin-top:10%}

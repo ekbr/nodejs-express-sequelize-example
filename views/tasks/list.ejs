@@ -8,33 +8,33 @@
     <hr>
     <div class="container">
         <div class="row">
-            <button type="button" class="btn btn-success" onclick="addFarmer();">+ Add Farmer</button>
+            <button type="button" class="btn btn-success" onclick="addTask();">+ Add Task</button>
             <hr><br>
             <table class="table table-bordered">
                 <tr>
                     <th width="50px">No</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Phone</th>
-                    <th>Email</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Deadline</th>
+                    <th>Farmer</th>
                     <th>Action</th>
                 </tr>            
                 <% if(data.length){       
                     for(var i = 0;i < data.length;i++) { %>
                 <tr>
-                    <td><%=(i+1)%></td>
-                    <td><%=data[i].username%></td>
-                    <td><%=data[i].address%></td>
-                    <td><%=data[i].phone%></td>
-                    <td><%=data[i].email%></td>
+                    <td><%= (i+1) %></td>
+                    <td><%= data[i].title %></td>
+                    <td><%=data[i].description %></td>
+                    <td><%=data[i].deadline %></td>
+                    <td><%=data[i].Farmer.username %></td>
                     <td>
-                        <a href="../farmers/<%=data[i].id%>">
+                        <a href="../tasks/<%=data[i].id%>">
                             <button type="button" class="btn btn-success">Show</button>
                         </a>
-                        <a href="../farmers/edit/<%=data[i].id%>">
+                        <a href="../tasks/edit/<%=data[i].id%>">
                             <button type="button" class="btn btn-info">Edit</button>
                         </a>
-                        <a href="../farmers/delete/<%=data[i].id%>">
+                        <a href="../tasks/delete/<%=data[i].id%>">
                             <button type="button" class="btn btn-danger">Delete</button>
                         </a>
                     </td>
@@ -42,7 +42,7 @@
             <% }
                 }else{ %>
                     <tr>
-                    <td colspan="3">No farmer</td>
+                    <td colspan="3">No task</td>
                     </tr>
             <% } %>
             </table>
