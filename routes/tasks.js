@@ -41,7 +41,6 @@ module.exports.edit = function(req, res){
             farmers = rows;
             res.render('tasks/edit',{page_title:"Edit Task", data:row, farmers:farmers});
         });
-        // res.render('farmers/edit',{page_title:"Edit Farmer", data:row});
     });
 };
 
@@ -55,7 +54,6 @@ module.exports.save_edit = function(req,res){
         deadline   : input.deadline,
         FarmerId   : input.FarmerId 
     };
-    //console.log('********', data);
     
     models.Task.find({ where: {id: id} }).on('success', function(task) {
         if (task) { // if the record exists in the db

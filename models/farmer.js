@@ -7,13 +7,6 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
     },
     address: DataTypes.STRING,
-    // email: {
-    //     type: DataTypes.STRING,
-    //     validate: {
-    //        validator: 'isEmail'
-    //     }
-    // },
-    
     email: { 
        type: DataTypes.STRING,
        unique: true,

@@ -5,6 +5,7 @@
   </head>
   <body>
   	<% include ../layout/header.ejs %>
+    <% include ../layout/functions.ejs %>
     <hr>
     <div class="container">
         <div class="row">
@@ -24,9 +25,9 @@
                 <tr>
                     <td><%= (i+1) %></td>
                     <td><%= data[i].title %></td>
-                    <td><%=data[i].description %></td>
-                    <td><%=data[i].deadline %></td>
-                    <td><%=data[i].Farmer.username %></td>
+                    <td><%= data[i].description %></td>
+                    <td><%= getDateLocale(data[i].deadline) %></td>
+                    <td><%= data[i].Farmer.username %></td>
                     <td>
                         <a href="../tasks/<%=data[i].id%>">
                             <button type="button" class="btn btn-success">Show</button>

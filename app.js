@@ -34,7 +34,6 @@ app.post('/farmers/edit/:id', farmers.save_edit);
 app.get('/farmers/delete/:id', farmers.delete);
 app.get('/farmers/:id/tasks', farmers.tasks);
 
-
 app.get('/tasks', tasks.list);//all tasks
 app.get('/tasks/add', tasks.add);//route add tasks
 app.post('/tasks/add', tasks.save);//route add tasks

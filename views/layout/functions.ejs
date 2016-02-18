@@ -1,0 +1,15 @@
+<%
+getDateLocale = function(old_date) {
+    arrow_img_name = "";
+    day = old_date.getDate();
+    month = old_date.getMonth();
+    year = old_date.getFullYear();
+    seconds = old_date.getSeconds();
+    minutes = old_date.getMinutes();
+    hour = old_date.getHours();
+    months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    console.log(hour+':'+minutes+':'+seconds+' '+date+'-'+months[month]+'-'+year);
+    new_date = day+'-'+months[month]+'-'+year+' '+ hour+':'+minutes+':'+seconds;
+    return new_date;
+}
+%>
