@@ -7,7 +7,12 @@
   	<% include ../layout/header.ejs %>
     <hr>
     <div class="container">
-        <div class="row">
+        <div class="row">  
+        <% if (message) { %>
+            <p>Error: <%= message %> </p>
+        <% } %>
+       
+                        
         <form method="post" action="/farmers/add">
             <div class="form-group">
                 <label>Name</label>

@@ -1,4 +1,5 @@
 var express = require('express');
+
 var models  = require('../models');
 
 module.exports.list = function(req, res){
@@ -11,7 +12,7 @@ module.exports.list = function(req, res){
 }
 
 module.exports.add = function(req, res){
-  res.render('farmers/new',{page_title:"Add Farmer"});
+  res.render('farmers/new',{page_title:"Add Farmer", message: ''});
 };
 
 /*Save the farmer*/
@@ -23,10 +24,21 @@ module.exports.save = function(req,res){
         email   : input.email,
         phone   : input.phone 
     };
-    models.Farmer.create({ username: data.username, address: data.address, email: data.email, phone: data.phone }).then(function(err) {
-        console.log("Error inserting : %s ",err );
-    })
-    res.redirect('/farmers');
+    
+    models.Farmer.create({
+         username: data.username,
+         address: data.address,
+         email: data.email,
+         phone: data.phone 
+    }).then(function(){
+        //do something when Farmer is created
+        res.redirect('/farmers');
+    }).catch(function(err){
+        console.log(err);
+        res.render('farmers/new', {message: err.errors.map(error => error.message)});
+        //do something when you get error
+        //you could check if this is validation error or other error
+    });
 };
 
 module.exports.edit = function(req, res){
