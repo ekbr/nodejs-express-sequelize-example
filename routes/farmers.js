@@ -45,7 +45,7 @@ module.exports.edit = function(req, res){
 	var id = req.params.id;
     models.Farmer.find({where: {id: id}}).then(function(row, err){
         if (err) console.log("Error Selecting : %s ",err );
-        res.render('farmers/edit',{page_title:"Edit Farmer", data:row});
+        res.render('farmers/edit',{page_title:"Edit Farmer", data:row, message: ''});
     });
 };
 
@@ -72,8 +72,9 @@ module.exports.save_edit = function(req,res){
                 phone: data.phone
             }).success(function() {
                 res.redirect('/farmers');
-            }).catch(function(e) {
-                console.log("Farmer update failed! %s", e);
+            }).catch(function(err) {
+                console.log("Farmer update failed! %s", err);
+                res.render('farmers/edit',{page_title:"Edit Farmer", data:farmer, message: err.errors.map(error => error.message)});
             });
         }
     })
@@ -103,11 +104,27 @@ module.exports.show = function(req, res){
 module.exports.tasks = function(req, res){
     var id = req.params.id;
     models.Farmer.find({ include: [ models.Task ], where: {id: id} }).then(function(farmer) {
-        //console.log('####################');
         //console.log(JSON.stringify(farmer.Tasks));
         res.render('farmers/tasks', {page_title: "Farmer Tasks", data:farmer, tasks: farmer.Tasks});
      })
      //res.redirect('/farmers');
+};
+
+
+// ###### RESTFULL APIS FOR FARMERS
+
+module.exports.api_farmers = function(req,res){
+  models.Farmer.findAll({ include: [ models.Task ] }).then(function(rows) {
+    res.send(JSON.stringify(rows));
+  });
+};
+
+module.exports.api_farmer = function(req, res){
+	var id = req.params.id;
+    models.Farmer.find({where: {id: id}, include: [ models.Task ]}).then(function(row, err){
+       // res.send(JSON.stringify(row));
+        res.json(row);
+    });
 };
 
 

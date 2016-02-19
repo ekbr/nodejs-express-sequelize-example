@@ -83,3 +83,21 @@ module.exports.delete = function(req, res){
         console.log("Task destroy failed! %s", e);
      });
 };
+
+
+// ###### RESTFULL APIS FOR TASKS
+
+module.exports.api_tasks = function(req,res){
+  models.Task.findAll({ include: [ models.Farmer ] }).then(function(rows) {
+    //res.render('tasks/list', {page_title: "Tasks", data:rows});
+    res.send(JSON.stringify(rows));
+  });
+};
+
+module.exports.api_task = function(req, res){
+	var id = req.params.id;
+    models.Task.find({where: {id: id}}).then(function(row, err){
+        res.send(JSON.stringify(row));
+    });
+};
+

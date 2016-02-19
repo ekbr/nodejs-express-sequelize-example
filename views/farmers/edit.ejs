@@ -8,54 +8,33 @@
         <hr>
         <div class="container">
          <div class="row">
-
-    <!--<form method="post" action="/farmers/edit/<%=data.id%>">
-        <table cellpadding="11">
-        <tr>
-            <td class="label">Name</td><td>: <input type="text" name="username" value="<%=data.username%>" required></td>
-         </tr>
-         <tr>
-            <td class="label" valign="top">Address</td><td valign="top">: <textarea name="address" required cols="30" rows="5"><%=data.address%></textarea></td>
-        </tr>
-        <tr>
-            <td class="label">Email</td><td>: <input type="text" name="email" value="<%=data.email%>" required></td>
-         </tr>
-          <tr>
-            <td class="label">Phone</td><td>: <input type="text" name="phone" value="<%=data.phone%>" required></td>
-         </tr>
-         <tr>
-            <td class="label"></td>
-            <td>
-                &nbsp; <input type="submit" name="submit" value="Save">
-               <input type="button" name="cancel" value="Cancel" class="cancel" onClick="cancelAdd()">
-            </td>
-         </tr>
-        </table>
-    </form>-->
+            <% if (message) { %>
+                <p class="bg-danger">Error: <%= message %> </p>
+            <% } %>
     
-    <form method="post" action="/farmers/edit/<%=data.id%>">
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" class="form-control" name="username" value="<%=data.username%>" required>
+            <form method="post" action="/farmers/edit/<%=data.id%>">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" name="username" value="<%=data.username%>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Address</label>
+                    <textarea class="form-control" name="address" required rows="3"><%=data.address%></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input class="form-control" type="email" name="email" value="<%=data.email%>" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" class="form-control" name="phone" value="<%=data.phone%>" required>
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+                <button type="submit" onclick="cancelAdd()" class="btn btn-default">Cancel</button>
+            </form>
         </div>
-        
-        <div class="form-group">
-            <label for="exampleInputPassword1">Address</label>
-            <textarea class="form-control" name="address" required rows="3"><%=data.address%></textarea>
-        </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input class="form-control" type="email" name="email" value="<%=data.email%>" required>
-        </div>
-        <div class="form-group">
-            <label>Phone</label>
-            <input type="text" class="form-control" name="phone" value="<%=data.phone%>" required>
-        </div>
-        <button type="submit" class="btn btn-success">Save</button>
-        <button type="submit" onclick="cancelAdd()" class="btn btn-default">Cancel</button>
-     </form>
-  </div>
-</div>
+    </div>
     <%- include ../layout/footer.ejs %>
   </body>
 </html>

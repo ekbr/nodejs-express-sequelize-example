@@ -4,6 +4,18 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
+var util = require('util');
+
+//#### JSON OPERATION
+var contents = fs.readFileSync("./tmp/data.json");
+var jsonContent = JSON.parse(contents);
+// Get Value from JSON
+ console.log("User Name:", jsonContent.username);
+ console.log("Email:", jsonContent.email);
+ console.log("Password:", jsonContent.password);
+
+//########
 
 var home = require('./routes/index');
 var farmers = require('./routes/farmers');
@@ -34,12 +46,23 @@ app.post('/farmers/edit/:id', farmers.save_edit);
 app.get('/farmers/delete/:id', farmers.delete);
 app.get('/farmers/:id/tasks', farmers.tasks);
 
+// ###### RESTFULL APIS FOR FARMERS
+app.get('/api/farmers', farmers.api_farmers);
+app.get('/api/farmers/:id', farmers.api_farmer);
+// ######
+
 app.get('/tasks', tasks.list);//all tasks
 app.get('/tasks/add', tasks.add);//route add tasks
 app.post('/tasks/add', tasks.save);//route add tasks
 app.get('/tasks/edit/:id', tasks.edit);
 app.post('/tasks/edit/:id', tasks.save_edit);
 app.get('/tasks/delete/:id', tasks.delete);
+
+
+// ###### RESTFULL APIS FOR TASKS
+app.get('/api/tasks', tasks.api_tasks);
+app.get('/api/tasks/:id', tasks.api_task);
+// ######
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
