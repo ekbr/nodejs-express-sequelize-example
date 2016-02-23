@@ -8,46 +8,48 @@
     <% include ../layout/functions.ejs %>
     <hr>
     <div class="container">
-        <div class="row">
-            <button type="button" class="btn btn-success" onclick="addTask();">+ Add Task</button>
-            <hr><br>
-            <table class="table table-bordered">
+        <h2>List Tasks</h2>
+    </div>
+    <br>
+    <div class="container">
+        <button type="button" class="btn btn-success pull-right" onclick="addTask();">+ Add Task</button>
+        <br><hr>
+        <table class="table table-bordered">
+            <tr>
+                <th width="50px">No</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Farmer</th>
+                <th>Action</th>
+            </tr>            
+            <% if(data.length){       
+                for(var i = 0;i < data.length;i++) { %>
+            <tr>
+                <td><%= (i+1) %></td>
+                <td><%= data[i].title %></td>
+                <td><%= data[i].description %></td>
+                <td><%= getDateLocale(data[i].deadline) %></td>
+                <td><%= data[i].Farmer.username %></td>
+                <td>
+                    <a href="../tasks/<%=data[i].id%>">
+                        <button type="button" class="btn btn-success">Show</button>
+                    </a>
+                    <a href="../tasks/edit/<%=data[i].id%>">
+                        <button type="button" class="btn btn-info">Edit</button>
+                    </a>
+                    <a href="../tasks/delete/<%=data[i].id%>">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        <% }
+            }else{ %>
                 <tr>
-                    <th width="50px">No</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Deadline</th>
-                    <th>Farmer</th>
-                    <th>Action</th>
-                </tr>            
-                <% if(data.length){       
-                    for(var i = 0;i < data.length;i++) { %>
-                <tr>
-                    <td><%= (i+1) %></td>
-                    <td><%= data[i].title %></td>
-                    <td><%= data[i].description %></td>
-                    <td><%= getDateLocale(data[i].deadline) %></td>
-                    <td><%= data[i].Farmer.username %></td>
-                    <td>
-                        <a href="../tasks/<%=data[i].id%>">
-                            <button type="button" class="btn btn-success">Show</button>
-                        </a>
-                        <a href="../tasks/edit/<%=data[i].id%>">
-                            <button type="button" class="btn btn-info">Edit</button>
-                        </a>
-                        <a href="../tasks/delete/<%=data[i].id%>">
-                            <button type="button" class="btn btn-danger">Delete</button>
-                        </a>
-                    </td>
+                <td colspan="3">No task</td>
                 </tr>
-            <% }
-                }else{ %>
-                    <tr>
-                    <td colspan="3">No task</td>
-                    </tr>
-            <% } %>
-            </table>
-        </div>
+        <% } %>
+        </table>
     </div>
     <%- include ../layout/footer.ejs %>
   </body>

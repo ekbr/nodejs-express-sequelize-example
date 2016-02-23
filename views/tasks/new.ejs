@@ -9,7 +9,10 @@
   	<% include ../layout/header.ejs %>
     <hr>
     <div class="container">
-        <div class="row">
+        <h2>Add Task</h2>
+    </div>
+    <br>
+    <div class="container">
         <form method="post" action="/tasks/add">
             <div class="form-group">
                 <label>Title</label>
@@ -40,7 +43,6 @@
             <button type="submit" class="btn btn-success">Save</button>
             <button type="submit" onclick="cancelAdd()" class="btn btn-default">Cancel</button>
         </form>
-    </div>
     </div>
     <%- include ../layout/footer.ejs %>
   </body>

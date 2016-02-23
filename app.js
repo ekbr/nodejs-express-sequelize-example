@@ -4,22 +4,29 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
 var fs = require('fs');
 var util = require('util');
+
+require('./config/passport')(passport); // pass passport for configuration
 
 //#### JSON OPERATION
 var contents = fs.readFileSync("./tmp/data.json");
 var jsonContent = JSON.parse(contents);
 // Get Value from JSON
- console.log("User Name:", jsonContent.username);
- console.log("Email:", jsonContent.email);
- console.log("Password:", jsonContent.password);
+//  console.log("User Name:", jsonContent.username);
+//  console.log("Email:", jsonContent.email);
+//  console.log("Password:", jsonContent.password);
 
 //########
 
 var home = require('./routes/index');
 var farmers = require('./routes/farmers');
 var tasks = require('./routes/tasks');
+var users = require('./routes/users');
 
 var app = express();
 
@@ -33,6 +40,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true, cookie: { maxAge: 3600000 }}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', home);

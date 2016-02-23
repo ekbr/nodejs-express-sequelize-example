@@ -8,40 +8,43 @@
   <body>
   	<% include ../layout/header.ejs %>
     <hr>
+    
     <div class="container">
-        <div class="row">
-            <form method="post" action="/tasks/edit/<%=data.id%>">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-control" name="title" value="<%=data.title%>" required>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-control" name="description" required rows="3"><%=data.description %></textarea>
-                </div>
-                <!--<div class="form-group">
-                    <label>Deadline</label>
-                    <input type="date" class="form-control" name="deadline" value="<%=data.deadline%>" required>
-                </div>-->
-                <div class="form-group">
-                <div id="datepicker" class="input-group date" data-date="<%=data.deadline%>" data-date-format="mm/dd/yyyy">
-                    <input class="form-control" type="text" name="deadline" readonly value="<%=data.deadline%>" />
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Task asssign to a farmer</label>
-                    <select class="form-control" name="FarmerId">
-                        <% for (var i = 0; i < farmers.length; i++) { %>
-                            <option value="<%= farmers[i].id %>"> <%= farmers[i].username %> </option>
-                        <% } %>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-success">Save</button>
-                <button type="submit" onclick="cancelAdd()" class="btn btn-default">Cancel</button>
-            </form>
-        </div>
+        <h2>Edit Task</h2>
+    </div>
+    <br>
+    <div class="container">
+        <form method="post" action="/tasks/edit/<%=data.id%>">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" name="title" value="<%=data.title%>" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-control" name="description" required rows="3"><%=data.description %></textarea>
+            </div>
+            <!--<div class="form-group">
+                <label>Deadline</label>
+                <input type="date" class="form-control" name="deadline" value="<%=data.deadline%>" required>
+            </div>-->
+            <div class="form-group">
+            <div id="datepicker" class="input-group date" data-date="<%=data.deadline%>" data-date-format="mm/dd/yyyy">
+                <input class="form-control" type="text" name="deadline" readonly value="<%=data.deadline%>" />
+                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Task asssign to a farmer</label>
+                <select class="form-control" name="FarmerId">
+                    <% for (var i = 0; i < farmers.length; i++) { %>
+                        <option value="<%= farmers[i].id %>"> <%= farmers[i].username %> </option>
+                    <% } %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="submit" onclick="cancelAdd()" class="btn btn-default">Cancel</button>
+        </form>
     </div>
     <%- include ../layout/footer.ejs %>
   </body>
