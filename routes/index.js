@@ -1,6 +1,7 @@
 var express = require('express');
 var passport = require('passport');
-var User = require('../models/user');
+var bcrypt = require('bcrypt-nodejs');
+var models = require('../models');
 var router = express.Router();
 
 /* GET home page. */
@@ -12,7 +13,7 @@ router.get('/', function(req, res, next) {
         if (user !== undefined ){
             user = user.toJSON();
         }
-        res.render('index', {title: 'Home', user: user});
+        res.render('index', {title: 'Home', user: user, message:''});
     }
 });
 
@@ -75,6 +76,44 @@ router.get('/logout', function(req, res) {
     console.log(req.isAuthenticated(), " *************")
     res.redirect('/login');
 });
+
+// show the change-password form
+router.get('/change_password', function(req, res, next) {
+    if(req.isAuthenticated()){
+           res.render('users/change_password', { message: req.flash('changepasswordMessage') }); 
+    } else {
+        res.redirect('/');
+    };
+});
+
+router.post('/change_password', function(req, res, next){
+    var currentPass = req.body.currentPass;
+    var newPass = req.body.newPass;
+    var RetypeNewPass = req.body.RetypeNewPass;
+    var newHashPass = '';
+    var currentUserID = req.session.passport.user;
+    
+    models.User.find({where: {id: currentUserID}}).then(function(row, err){
+        if(bcrypt.compareSync(currentPass, row.password)){
+            if ( newPass == RetypeNewPass) {
+                newHashPass =  bcrypt.hashSync(RetypeNewPass, null, null);
+                row.updateAttributes({
+                    password: newHashPass
+                }).success(function() {
+                    res.render('index', {message: 'Your password is successfully updated!'});
+                }).catch(function(err) {
+                    console.log(err);
+                    res.render('users/change_password', {message: req.flash('changepasswordMessage')});
+                });
+            } else {
+                res.render('users/change_password', {message: 'New password and retype new password are not matching!!'});
+            };
+        } else {
+           res.render('users/change_password', {message: 'Current Password is wrong!'});
+        };
+    });
+});
+
 
 module.exports = router;
 
