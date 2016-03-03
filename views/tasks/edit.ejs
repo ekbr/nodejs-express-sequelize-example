@@ -14,6 +14,9 @@
     </div>
     <br>
     <div class="container">
+        <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+        <% } %>
         <form method="post" action="/tasks/edit/<%=data.id%>">
             <div class="form-group">
                 <label>Title</label>

@@ -7,12 +7,12 @@ module.exports.list = function(req, res){
      models.Farmer.findAll({ include: [ models.Task ] }).then(function(farmers) {
         //console.log(JSON.stringify(farmers))
      });
-    res.render('farmers/farmers', {page_title: "Farmers", data:rows});
+    res.render('farmers/farmers', {page_title: "Farmers", data:rows, message: req.flash('message')});
   });; 
 }
 
 module.exports.add = function(req, res){
-  res.render('farmers/new',{page_title:"Add Farmer", message: ''});
+  res.render('farmers/new',{page_title:"Add Farmer", message: req.flash('farmerAdd')});
 };
 
 /*Save the farmer*/
@@ -35,7 +35,8 @@ module.exports.save = function(req,res){
         res.redirect('/farmers');
     }).catch(function(err){
         console.log(err);
-        res.render('farmers/new', {message: err.errors.map(error => error.message)});
+        req.flash('farmerAdd', err.errors.map(error => error.message))
+        res.render('farmers/new', {message: req.flash('farmerAdd')});
         //do something when you get error
         //you could check if this is validation error or other error
     });
@@ -45,7 +46,7 @@ module.exports.edit = function(req, res){
 	var id = req.params.id;
     models.Farmer.find({where: {id: id}}).then(function(row, err){
         if (err) console.log("Error Selecting : %s ",err );
-        res.render('farmers/edit',{page_title:"Edit Farmer", data:row, message: ''});
+        res.render('farmers/edit',{page_title:"Edit Farmer", data:row, message: req.flash('farmerEdit')});
     });
 };
 
@@ -58,11 +59,6 @@ module.exports.save_edit = function(req,res){
         email   : input.email,
         phone   : input.phone 
     };
-    // models.Farmer.findById(id).then(function(row, err){
-    //     if (err) console.log("Error updating : %s ",err );
-    //     res.redirect('/farmers');
-    // });
-    
     models.Farmer.find({ where: {id: id} }).on('success', function(farmer) {
         if (farmer) { // if the record exists in the db
             farmer.updateAttributes({
@@ -74,7 +70,8 @@ module.exports.save_edit = function(req,res){
                 res.redirect('/farmers');
             }).catch(function(err) {
                 console.log("Farmer update failed! %s", err);
-                res.render('farmers/edit',{page_title:"Edit Farmer", data:farmer, message: err.errors.map(error => error.message)});
+                req.flash('farmerEdit', err.errors.map(error => error.message));
+                res.render('farmers/edit',{page_title:"Edit Farmer", data:farmer, message: req.flash('farmerEdit')});
             });
         }
     })
@@ -87,9 +84,12 @@ module.exports.delete = function(req, res){
             id: id
         }
      }).success(function() {
+        req.flash('message', 'Farmer is successfully deleted!');
         res.redirect('/farmers');
      }).catch(function(e) {
         console.log("Farmer destroy failed! %s", e);
+        req.flash('message', e);
+        res.redirect('/farmers');
      });
 };
 
@@ -104,12 +104,10 @@ module.exports.show = function(req, res){
 module.exports.tasks = function(req, res){
     var id = req.params.id;
     models.Farmer.find({ include: [ models.Task ], where: {id: id} }).then(function(farmer) {
-        //console.log(JSON.stringify(farmer.Tasks));
         res.render('farmers/tasks', {page_title: "Farmer Tasks", data:farmer, tasks: farmer.Tasks});
      })
      //res.redirect('/farmers');
 };
-
 
 // ###### RESTFULL APIS FOR FARMERS
 

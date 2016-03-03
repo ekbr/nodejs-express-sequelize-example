@@ -4,20 +4,11 @@ module.exports = function(sequelize, DataTypes) {
   var Task = sequelize.define('Task', {
     title: DataTypes.STRING,
     deadline: DataTypes.DATE,
-    description: DataTypes.TEXT,
-    FarmerId: {
-        type: DataTypes.INTEGER,
-        references: {
-            // This is a reference to another model
-            model: Farmer,
-            // This is the column name of the referenced model
-            key: 'id'
-        }
-    }
+    description: DataTypes.TEXT
   }, {
     classMethods: {
       associate: function(models) {
-          Task.belongsTo(models.Farmer);
+          Task.belongsTo(models.Farmer, { foreignKey: 'FarmerId', foreignKeyConstraint:true });
         // associations can be defined here
       }
     }

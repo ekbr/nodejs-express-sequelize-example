@@ -12,6 +12,9 @@
     </div>
     <br>
     <div class="container">
+        <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+        <% } %>
         <button type="button" class="btn btn-success pull-right" onclick="addTask();">+ Add Task</button>
         <br><hr>
         <table class="table table-bordered">
@@ -30,7 +33,11 @@
                 <td><%= data[i].title %></td>
                 <td><%= data[i].description %></td>
                 <td><%= getDateLocale(data[i].deadline) %></td>
-                <td><%= data[i].Farmer.username %></td>
+                <% if (data[i].FarmerId) {%>
+                    <td><%= data[i].Farmer.username %></td>
+                <%} else { %>
+                    <td>NULL</td>
+                <% } %>
                 <td>
                     <a href="../tasks/<%=data[i].id%>">
                         <button type="button" class="btn btn-success">Show</button>

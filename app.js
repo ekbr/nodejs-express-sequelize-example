@@ -40,35 +40,40 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true, cookie: { maxAge: 3600000 }}));
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false, cookie: { maxAge: 3600000 }}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
+function IsAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) 
+     return next();
+  res.redirect("/");
+};
+
 app.use('/', home);
 
-app.get('/farmers', farmers.list);//all farmers
-app.get('/farmers/add', farmers.add);//route add farmer
-app.post('/farmers/add', farmers.save);//route add farmer
-app.get('/farmers/edit/:id', farmers.edit);
-app.get('/farmers/:id', farmers.show);
-app.post('/farmers/edit/:id', farmers.save_edit);
-app.get('/farmers/delete/:id', farmers.delete);
-app.get('/farmers/:id/tasks', farmers.tasks);
+app.get('/farmers', IsAuthenticated, farmers.list);//all farmers
+app.get('/farmers/add', IsAuthenticated, farmers.add);//route add farmer
+app.post('/farmers/add', IsAuthenticated, farmers.save);//route add farmer
+app.get('/farmers/edit/:id', IsAuthenticated, farmers.edit);
+app.get('/farmers/:id', IsAuthenticated, farmers.show);
+app.post('/farmers/edit/:id', IsAuthenticated, farmers.save_edit);
+app.get('/farmers/delete/:id', IsAuthenticated, farmers.delete);
+app.get('/farmers/:id/tasks', IsAuthenticated, farmers.tasks);
 
 // ###### RESTFULL APIS FOR FARMERS
 app.get('/api/farmers', farmers.api_farmers);
 app.get('/api/farmers/:id', farmers.api_farmer);
 // ######
 
-app.get('/tasks', tasks.list);//all tasks
-app.get('/tasks/add', tasks.add);//route add tasks
-app.post('/tasks/add', tasks.save);//route add tasks
-app.get('/tasks/edit/:id', tasks.edit);
-app.post('/tasks/edit/:id', tasks.save_edit);
-app.get('/tasks/delete/:id', tasks.delete);
-
+app.get('/tasks', IsAuthenticated, tasks.list);//all tasks
+app.get('/tasks/add', IsAuthenticated, tasks.add);//route add tasks
+app.post('/tasks/add', IsAuthenticated, tasks.save);//route add tasks
+app.get('/tasks/edit/:id', IsAuthenticated, tasks.edit);
+app.post('/tasks/edit/:id', IsAuthenticated, tasks.save_edit);
+app.get('/tasks/delete/:id', IsAuthenticated, tasks.delete);
 
 // ###### RESTFULL APIS FOR TASKS
 app.get('/api/tasks', tasks.api_tasks);

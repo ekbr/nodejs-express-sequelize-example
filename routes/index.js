@@ -7,13 +7,15 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
     if (!req.isAuthenticated()) {
+        req.flash('loginMessage', 'You have to sign in!');
         res.redirect('/login');
     } else {
         var user = req.user;
         if (user !== undefined ){
             user = user.toJSON();
+            console.log(user);
         }
-        res.render('index', {title: 'Home', user: user, message:''});
+        res.render('index', {title: 'Home', user: user, message: req.flash('message')});
     }
 });
 
@@ -30,10 +32,12 @@ router.post('/login', function(req, res, next) {
        failureRedirect: '/login'
        }, function(err, user, info) {
         if(err) {
+            req.flash('loginMessage', err);
             return res.render('login', {title: 'Login',  message: req.flash('loginMessage')});
         };
         return req.logIn(user, function(err) {
             if(err) {
+                req.flash('loginMessage', err);
                 return res.render('login', {title: 'Login',  message: req.flash('loginMessage')});
             } else {
                 return res.redirect('/');
@@ -61,7 +65,43 @@ router.post('/signup', passport.authenticate('local-signup', {
 }),function(req, res) {
     console.log(req.user.username+' is successfully logged in.');
     console.log(JSON.stringify(req.user));
-    res.redirect('/profile');  
+    res.redirect('/');  
+});
+
+// show the edit-profile form
+router.get('/edit_profile', function(req, res) {
+    if(!req.isAuthenticated()) {
+       req.flash('loginMessage', 'You have to sign in!');
+       res.redirect('/login');
+    } else {
+        var currentUserID = req.session.passport.user;
+        console.log('currentUserID ',currentUserID);
+        models.User.find({where: {id: currentUserID}}).then(function(row, err){
+           res.render('users/edit_profile', {user: row, message: req.flash('editProfileMessage') });
+        });
+    };
+});
+
+// process the edit-profile form
+router.post('/edit_profile', function(req, res, next){
+   var currentUserID = req.session.passport.user;
+   models.User.find({where: {id: currentUserID}}).then(function(row, err){
+       var data = {
+         username: req.body.username,
+         email: req.body.email
+       };
+       row.updateAttributes({
+           username: data.username,
+           email: data.email
+       }).success(function(){
+           req.flash('message', 'Your Profile is successfully updated!');
+           res.redirect('/');
+       }).catch(function(err) {
+           console.log(err);
+           req.flash('editProfileMessage', err.errors.map(error => error.message));
+           res.redirect('/edit_profile');
+       });
+   });
 });
 
 /* Profile section */
@@ -73,7 +113,6 @@ router.get('/profile', isLoggedIn, function(req, res) {
 
 router.get('/logout', function(req, res) {
     req.logout();
-    console.log(req.isAuthenticated(), " *************")
     res.redirect('/login');
 });
 
@@ -82,7 +121,8 @@ router.get('/change_password', function(req, res, next) {
     if(req.isAuthenticated()){
            res.render('users/change_password', { message: req.flash('changepasswordMessage') }); 
     } else {
-        res.redirect('/');
+        req.flash('loginMessage', 'You have to sign in!');
+        res.redirect('/login');
     };
 });
 
@@ -100,20 +140,23 @@ router.post('/change_password', function(req, res, next){
                 row.updateAttributes({
                     password: newHashPass
                 }).success(function() {
-                    res.render('index', {message: 'Your password is successfully updated!'});
+                    req.flash('message', 'Your password is successfully updated!');
+                    res.redirect('/');
                 }).catch(function(err) {
                     console.log(err);
+                    req.flash('changepasswordMessage', err.errors.map(error => error.message));
                     res.render('users/change_password', {message: req.flash('changepasswordMessage')});
                 });
             } else {
-                res.render('users/change_password', {message: 'New password and retype new password are not matching!!'});
+                req.flash('changepasswordMessage', 'New password and retype new password are not matching!!')
+                res.render('users/change_password', {message: req.flash('changepasswordMessage')});
             };
         } else {
-           res.render('users/change_password', {message: 'Current Password is wrong!'});
+            req.flash('changepasswordMessage', 'Current Password is wrong!');
+           res.render('users/change_password', {message: req.flash('changepasswordMessage')});
         };
     });
 });
-
 
 module.exports = router;
 

@@ -11,8 +11,8 @@
          </div>
          <br>
         <div class="container">
-            <% if (message) { %>
-                <p class="bg-danger">Error: <%= message %> </p>
+            <% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %></div>
             <% } %>
     
             <form method="post" action="/farmers/edit/<%=data.id%>">

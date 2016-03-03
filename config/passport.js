@@ -1,14 +1,7 @@
-// config/passport.js
-
-// load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
-
-// load up the user model
-
 var bcrypt = require('bcrypt-nodejs');
 var models = require('../models');
 
-// expose this function to our app using module.exports
 module.exports = function(passport) {
 
     // =========================================================================
@@ -71,6 +64,7 @@ module.exports = function(passport) {
                         return done(null, row.dataValues);
                     }).catch(function(err){
                         console.log(err);
+                        return done(null, false, req.flash('signupMessage', err.errors.map(error => error.message)));
                     });
                 }
             });

@@ -6,9 +6,9 @@
   <body>
   	<% include layout/header.ejs %>
     <div class="container" style="margin-top:70px;">
-        <% if (message) { %>
-            <div class="alert alert-danger"><%= message %></div>
-        <% } %>
+        <% if (message.length > 0) { %>
+            <div class="alert alert-success"><%= message %></div>
+        <% }%>
         <p>Hello World :)</p>
     </div>
     <% include layout/footer.ejs %>

@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-          Farmer.hasMany(models.Task);
+          Farmer.hasMany(models.Task, { onDelete: 'CASCADE', onUpdate: 'CASCADE' });
         // associations can be defined here
       }
     }
