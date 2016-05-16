@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
         var user = req.user;
         if (user !== undefined ){
             user = user.toJSON();
-            console.log(user);
+            //console.log(user);
         }
         res.render('index', {title: 'Home', user: user, message: req.flash('message')});
     }

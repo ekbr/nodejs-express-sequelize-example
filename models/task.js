@@ -4,7 +4,10 @@ module.exports = function(sequelize, DataTypes) {
   var Task = sequelize.define('Task', {
     title: DataTypes.STRING,
     deadline: DataTypes.DATE,
-    description: DataTypes.TEXT
+    description: {
+        type: DataTypes.TEXT,
+        unique: true
+    }
   }, {
     classMethods: {
       associate: function(models) {

@@ -9,7 +9,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var fs = require('fs');
-var util = require('util');
 
 require('./config/passport')(passport); // pass passport for configuration
 
@@ -53,6 +52,8 @@ function IsAuthenticated(req, res, next) {
 };
 
 app.use('/', home);
+
+app.get('/roles', IsAuthenticated, users.list);
 
 app.get('/farmers', IsAuthenticated, farmers.list);//all farmers
 app.get('/farmers/add', IsAuthenticated, farmers.add);//route add farmer
